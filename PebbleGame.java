@@ -38,12 +38,14 @@ public class PebbleGame {
             players.add(new Player());
         }
 
+        Scanner sc = new Scanner(System.in);
+
         for(int i=0; i<blackBags.size(); i++) {
 
             BlackBag bag = blackBags.get(i);
             String line = null;
             BufferedReader bufferedReader = null;
-            Scanner sc = new Scanner(System.in);
+            
 
             try {
                 //input the name of the file.
@@ -86,6 +88,7 @@ public class PebbleGame {
                 //bufferedReader.close();
             }
         }
+        sc.close();
         input.close();
         
         int count = 0;
@@ -95,37 +98,42 @@ public class PebbleGame {
             // choosing from a random bag
             Random random = new Random();
             int randomBagNum = random.nextInt(3);
-            BlackBag bag = blackBags.get(randomBagNum);
+            BlackBag blackBag = blackBags.get(randomBagNum);
+            WhiteBag whiteBag = whiteBags.get(randomBagNum);
 
             // check if the bag isn't empty
-            if(bag.getPebbles().size() > 0) {
+            if(blackBag.getPebbles().size() > 0) {
 
                 // get 10 random pebbles
                 for(int i=0; i<10; i++) {
-                    int randomPebbleNum = random.nextInt(100);
-                    Pebble pebble = bag.getPebbles().get(randomPebbleNum);
-
-                    // to check the there aren't any duplicates
-                    /*
-                    while(!player.getPebbles().contains(pebble)) {
-                        System.out.println("555555555555");
-                        randomPebbleNum = random.nextInt(100);
-                        pebble = bag.getPebbles().get(randomPebbleNum);
-                    }
-                    */
+                    // pick the pebble at random
+                    int randomPebbleNum = random.nextInt(blackBag.getPebbles().size());
+                    Pebble pebble = blackBag.getPebbles().get(randomPebbleNum);
+                    // the player recieves the pebbles
                     player.addPebble(pebble);
+                    // the pebble is removed from the black bag
+                    blackBag.removePebble(pebble);
                 }
+
             } else {
                 // empty a white bag into the black bag.
+
             }   
 
             int total_weight = 0;
+            System.out.println("Player " + count + ":\n");
             for(Pebble pebble: player.getPebbles()) {
-                System.out.println("Player " + count + ": Pebble weight: " + pebble.getWeight());   
+                System.out.println("Pebble weight: " + pebble.getWeight());   
                 total_weight += pebble.getWeight();
             }
 
             System.out.println("\nPlayer " + count + ": Total weight: " + total_weight + "\n");
+        }
+
+        int bag_count = 0;
+        for(BlackBag blackBag: blackBags) {
+            System.out.println("Bag " + bag_count + ": " + blackBag.getPebbles().size());
+            bag_count++;
         }
     }
 }
