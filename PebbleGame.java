@@ -8,18 +8,42 @@ public class PebbleGame {
 
     public static class Player {
 
+        // attributes
         private ArrayList<Pebble> pebbles = new ArrayList<>();
         private static ArrayList<Player> players = new ArrayList<>();
         private int id;
 
+        /**
+         * Constructor method for Player class
+         * @param id
+         */
         public Player(int id){
             this.id = id;
         }
 
+        /**
+         * Gets the id of the Player
+         * @return id
+         */
         public int getID() {return id;}
+        /**
+         * Gets the pebbles that the player currently holds
+         * @return players
+         */
         public ArrayList<Player> getPlayers() {return players;}
+        /**
+         * 
+         */
         public void pickPebbble() {}    
+        /**
+         * Gets the pebbles
+         * @return
+         */
         public ArrayList<Pebble> getPebbles() {return pebbles;}
+        /**
+         * Adds a pebble to the array of pebbles
+         * @param pebble
+         */
         public void addPebble(Pebble pebble) {pebbles.add(pebble);}
     }
 
@@ -72,11 +96,21 @@ public class PebbleGame {
         return weights;
     }
 
+    /**
+     * takes the weights and puts the in the bag
+     * @param bag
+     * @param weights
+     */
     public static void fillBag(Bag bag, String[] weights) {
         
+        int weight;
+
         // iterate through the array
         for (int i=0; i < weights.length; i++) {
-            int weight = Integer.parseInt(weights[i]);
+            weight = Integer.parseInt(weights[i]);
+            if(weight < 1) {
+                throw new Exception("The weight must be positive");
+            }
             bag.addPebble(new Pebble(weight));
         }   
     }
@@ -112,7 +146,27 @@ public class PebbleGame {
         }
 
         Scanner sc = new Scanner(System.in);
+        Boolean filesLoaded = false;
+        while(filesLoaded != true){
+             // fill the bags with the pebbles from the weights
+            for(int i=0; i<blackBags.size(); i++) {
 
+                Bag bag = blackBags.get(i);
+                
+                // input the file
+                System.out.println("Please enter the location of bag number " + i + " to load:");
+                String filename = sc.nextLine();
+                // store the weights
+                String[] weights = PebbleGame.addFile(filename);
+                // fill the bag with the weigths
+                PebbleGame.fillBag(bag, weights);   
+                
+                if(i == 2){
+                    filesLoaded = true;
+                }
+            }
+        }
+       
         for(int i=0; i<blackBags.size(); i++) {
 
             Bag bag = blackBags.get(i);
@@ -120,16 +174,16 @@ public class PebbleGame {
             // input the file
             System.out.println("Please enter the location of bag number " + i + " to load:");
             String filename = sc.nextLine();
-
             // store the weights
             String[] weights = PebbleGame.addFile(filename);
-            
             // fill the bag with the weigths
             PebbleGame.fillBag(bag, weights);       
         }
+
         sc.close();
         input.close();
         
+        // testing thingy
         int count = 0;
         for(Player player: Player.players) {
             count ++;
@@ -158,6 +212,7 @@ public class PebbleGame {
                 // empty a white bag into the black bag.
 
             }   
+
 
             int total_weight = 0;
             System.out.println("Player " + count + ":\n");

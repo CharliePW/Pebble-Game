@@ -2,9 +2,14 @@ import java.util.ArrayList;
 
 public class Bag {
 
+    // attributes
     private ArrayList<Pebble> pebbles = new ArrayList<>();
     private String colour;
 
+    /**
+     * Constructor of the bag class
+     * @param colour
+     */
     public Bag(String colour) {
         this.colour = colour;
     }
@@ -14,7 +19,6 @@ public class Bag {
      * @return colour
      */
     public String getColour() {return colour;}
-
 
     /**
      * This method adds a pebble to the bag
@@ -28,23 +32,17 @@ public class Bag {
      * This method sets the attribute pebbles
      * @param pebbles
      */
-    public void setPebbles(ArrayList<Pebble> pebbles) {
-        this.pebbles = pebbles;
-    }
+    public void setPebbles(ArrayList<Pebble> pebbles) {this.pebbles = pebbles;}
 
     /**
      * This method remove a pebble from the bag
      * @param pebble
      */
-    public void removePebble(Pebble pebble) {
-        pebbles.remove(pebble);
-    }
-
+    public void removePebble(Pebble pebble) {pebbles.remove(pebble);}
+    
     /**
      * This method returns an ArrayList of all the pebbles the bag contains
      * @return pebbles
      */
-    public ArrayList<Pebble> getPebbles() {
-        return pebbles;
-    }
+    public ArrayList<Pebble> getPebbles() {return pebbles;}
 }
