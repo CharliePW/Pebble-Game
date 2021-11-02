@@ -23,14 +23,6 @@ public class PebbleGame {
         public void addPebble(Pebble pebble) {pebbles.add(pebble);}
     }
 
-    /*
-    //create the black bags
-    ArrayList<Bag> blackBags = new ArrayList<>();    
-
-    public void createBag(String colour){
-        blackBags.add(new Bag(colour));
-    }*/
-
     /**
      * adds a player and stores the player in the arraylist of players
      * @param id
@@ -44,7 +36,7 @@ public class PebbleGame {
      * @param filename
      * @return weights
      */
-    public String[] addFile(String filename) {
+    public static String[] addFile(String filename) {
 
         String line = null;
         BufferedReader bufferedReader = null;
@@ -80,6 +72,15 @@ public class PebbleGame {
         return weights;
     }
 
+    public static void fillBag(Bag bag, String[] weights) {
+        
+        // iterate through the array
+        for (int i=0; i < weights.length; i++) {
+            int weight = Integer.parseInt(weights[i]);
+            bag.addPebble(new Pebble(weight));
+        }   
+    }
+
     public static void main(String[] args) {
 
         //create the black bags
@@ -93,9 +94,6 @@ public class PebbleGame {
         whiteBags.add(new Bag("white"));
         whiteBags.add(new Bag("white"));
         whiteBags.add(new Bag("white"));
-
-        // the players will be added to this array after enterring how many players there will be
-        ArrayList<Player> players = new ArrayList<>();
 
         System.out.println("\nWelcome to the PebbleGame!!");
         System.out.println("You will be asked to enter the number of players.");
@@ -113,64 +111,27 @@ public class PebbleGame {
             PebbleGame.addPlayer(i+1);
         }
 
-
         Scanner sc = new Scanner(System.in);
 
         for(int i=0; i<blackBags.size(); i++) {
 
             Bag bag = blackBags.get(i);
             
+            // input the file
             System.out.println("Please enter the location of bag number " + i + " to load:");
-            String fileName = sc.nextLine();
-            String[] weightsList = PebbleGame.addFile(filename);
+            String filename = sc.nextLine();
 
-
-            try {
-                //input the name of the file.
-                System.out.println("Please enter the location of bag number " + i + " to load:");
-                String fileName = sc.nextLine();
-        
-                //String filePath = "/Users/charliewright/Documents/Uni of Exeter/Year 2/Software Development/CA1/src/Example input files/";
-                //filePath += fileName;
-
-                //reading the file
-                File file = new File(fileName);
-                FileReader fileReader = new FileReader(file);
-                bufferedReader = new BufferedReader(fileReader);
-
-                // seperating each value in the file from the ","
-                while ((line = bufferedReader.readLine()) != null) {
-
-                    //put all the values as string in an array 
-                    String[] csvLineElements;
-
-                    // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
-                    if(fileName.equals("example_file_3.csv")) {
-                        csvLineElements = line.split(", ");   
-                    } else {
-                        csvLineElements = line.split(",");  
-                    }
-                    
-                    // iterate through the array
-                    for (int j=0; j < csvLineElements.length; j++) {
-                        int weight = Integer.parseInt(csvLineElements[j]);
-                        bag.addPebble(new Pebble(weight));
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch(NoSuchElementException e) {
-                e.printStackTrace();
-            } finally {
-                // close the buffered reader
-                //bufferedReader.close();
-            }
+            // store the weights
+            String[] weights = PebbleGame.addFile(filename);
+            
+            // fill the bag with the weigths
+            PebbleGame.fillBag(bag, weights);       
         }
         sc.close();
         input.close();
         
         int count = 0;
-        for(Player player: players) {
+        for(Player player: Player.players) {
             count ++;
 
             // choosing from a random bag
