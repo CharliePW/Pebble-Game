@@ -6,21 +6,79 @@ import java.util.Random;
 
 public class PebbleGame {
 
-    public class Player {
+    public static class Player {
 
         private ArrayList<Pebble> pebbles = new ArrayList<>();
+        private static ArrayList<Player> players = new ArrayList<>();
         private int id;
 
         public Player(int id){
             this.id = id;
         }
 
+        public int getID() {return id;}
+        public ArrayList<Player> getPlayers() {return players;}
         public void pickPebbble() {}    
         public ArrayList<Pebble> getPebbles() {return pebbles;}
         public void addPebble(Pebble pebble) {pebbles.add(pebble);}
     }
 
+    /*
+    //create the black bags
+    ArrayList<Bag> blackBags = new ArrayList<>();    
 
+    public void createBag(String colour){
+        blackBags.add(new Bag(colour));
+    }*/
+
+    /**
+     * adds a player and stores the player in the arraylist of players
+     * @param id
+     */
+    public static void addPlayer(int id) {
+        PebbleGame.Player.players.add(new Player(id));
+    }
+
+    /**
+     * reads the file and returns an array of the weights
+     * @param filename
+     * @return weights
+     */
+    public String[] addFile(String filename) {
+
+        String line = null;
+        BufferedReader bufferedReader = null;
+        String[] weights = null;
+
+        try {
+            //reading the file
+            File file = new File(filename);
+            FileReader fileReader = new FileReader(file);
+            bufferedReader = new BufferedReader(fileReader);
+
+            // seperating each value in the file from the ","
+            while ((line = bufferedReader.readLine()) != null) {                
+
+                // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
+                if(filename.equals("example_file_3.csv")) {
+                    // store the weights in the array
+                    weights = line.split(", ");   
+                } else {
+                    // store the weigths in the array
+                    weights = line.split(",");  
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch(NoSuchElementException e) {
+            e.printStackTrace();
+        } finally {
+            // close the buffered reader
+            //bufferedReader.close();
+        }
+
+        return weights;
+    }
 
     public static void main(String[] args) {
 
@@ -52,17 +110,20 @@ public class PebbleGame {
 
         // create the number of players as inputted and add them to the list of players
         for(int i=0; i<number; i++) {
-            players.add(PebbleGame.new Player());
+            PebbleGame.addPlayer(i+1);
         }
+
 
         Scanner sc = new Scanner(System.in);
 
         for(int i=0; i<blackBags.size(); i++) {
 
             Bag bag = blackBags.get(i);
-            String line = null;
-            BufferedReader bufferedReader = null;
             
+            System.out.println("Please enter the location of bag number " + i + " to load:");
+            String fileName = sc.nextLine();
+            String[] weightsList = PebbleGame.addFile(filename);
+
 
             try {
                 //input the name of the file.
