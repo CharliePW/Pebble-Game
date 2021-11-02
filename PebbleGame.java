@@ -5,19 +5,36 @@ import java.io.*;
 import java.util.Random;
 
 public class PebbleGame {
+
+    public class Player {
+
+        private ArrayList<Pebble> pebbles = new ArrayList<>();
+        private int id;
+
+        public Player(int id){
+            this.id = id;
+        }
+
+        public void pickPebbble() {}    
+        public ArrayList<Pebble> getPebbles() {return pebbles;}
+        public void addPebble(Pebble pebble) {pebbles.add(pebble);}
+    }
+
+
+
     public static void main(String[] args) {
 
         //create the black bags
-        ArrayList<BlackBag> blackBags = new ArrayList<>();
-        blackBags.add(new BlackBag());
-        blackBags.add(new BlackBag());
-        blackBags.add(new BlackBag());
+        ArrayList<Bag> blackBags = new ArrayList<>();
+        blackBags.add(new Bag("black"));
+        blackBags.add(new Bag("black"));
+        blackBags.add(new Bag("black"));
 
         // create the white bags
-        ArrayList<WhiteBag> whiteBags = new ArrayList<>();
-        whiteBags.add(new WhiteBag());
-        whiteBags.add(new WhiteBag());
-        whiteBags.add(new WhiteBag());
+        ArrayList<Bag> whiteBags = new ArrayList<>();
+        whiteBags.add(new Bag("white"));
+        whiteBags.add(new Bag("white"));
+        whiteBags.add(new Bag("white"));
 
         // the players will be added to this array after enterring how many players there will be
         ArrayList<Player> players = new ArrayList<>();
@@ -35,14 +52,14 @@ public class PebbleGame {
 
         // create the number of players as inputted and add them to the list of players
         for(int i=0; i<number; i++) {
-            players.add(new Player());
+            players.add(PebbleGame.new Player());
         }
 
         Scanner sc = new Scanner(System.in);
 
         for(int i=0; i<blackBags.size(); i++) {
 
-            BlackBag bag = blackBags.get(i);
+            Bag bag = blackBags.get(i);
             String line = null;
             BufferedReader bufferedReader = null;
             
@@ -98,8 +115,8 @@ public class PebbleGame {
             // choosing from a random bag
             Random random = new Random();
             int randomBagNum = random.nextInt(3);
-            BlackBag blackBag = blackBags.get(randomBagNum);
-            WhiteBag whiteBag = whiteBags.get(randomBagNum);
+            Bag blackBag = blackBags.get(randomBagNum);
+            Bag whiteBag = whiteBags.get(randomBagNum);
 
             // check if the bag isn't empty
             if(blackBag.getPebbles().size() > 0) {
@@ -131,7 +148,7 @@ public class PebbleGame {
         }
 
         int bag_count = 0;
-        for(BlackBag blackBag: blackBags) {
+        for(Bag blackBag: blackBags) {
             System.out.println("Bag " + bag_count + ": " + blackBag.getPebbles().size());
             bag_count++;
         }

@@ -3,8 +3,18 @@ import java.util.ArrayList;
 public class Bag {
 
     private ArrayList<Pebble> pebbles = new ArrayList<>();
+    private String colour;
 
-    public Bag() {}
+    public Bag(String colour) {
+        this.colour = colour;
+    }
+
+    /**
+     * Gets the colour of the bag
+     * @return colour
+     */
+    public String getColour() {return colour;}
+
 
     /**
      * This method adds a pebble to the bag
