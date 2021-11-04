@@ -74,14 +74,18 @@ public class PebbleGame {
 
             // seperating each value in the file from the ","
             while ((line = bufferedReader.readLine()) != null) {                
-
-                // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
-                if(filename.equals("example_file_3.csv")) {
-                    // store the weights in the array
-                    weights = line.split(", ");   
+                
+                if(line.matches("(\\d+(,)?\\s?)+")) {
+                    // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
+                    if(filename.equals("example_file_3.csv")) {
+                        // store the weights in the array
+                        weights = line.split(", ");   
+                    } else {
+                        // store the weigths in the array
+                        weights = line.split(",");  
+                    }
                 } else {
-                    // store the weigths in the array
-                    weights = line.split(",");  
+        
                 }
             }
         } catch (IOException e) {
@@ -108,23 +112,66 @@ public class PebbleGame {
         // iterate through the array
         for (int i=0; i < weights.length; i++) {
             weight = Integer.parseInt(weights[i]);
-            if(weight < 1) {
-                throw new Exception("The weight must be positive");
-            }
+            
             bag.addPebble(new Pebble(weight));
         }   
+    }
+
+    public static void validateWeights(String line) {
+        // seperating each value in the file from the ","
+        while ((line = bufferedReader.readLine()) != null) {                
+                
+            if(line.matches("(\\d+(,)?\\s?)+")) {
+                // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
+                if(filename.equals("example_file_3.csv")) {
+                    // store the weights in the array
+                    weights = line.split(", ");   
+                } else {
+                    // store the weigths in the array
+                    weights = line.split(",");  
+                }
+            } else {
+    
+            }
+        }
+    }
+
+    public static void bagInputs() {
+
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Bag> blackBags = Bag.getBlackBags();
+        int i = 0;
+
+        while(i<3) {
+
+            Bag bag = blackBags.get(i);
+            
+            // input the file
+            System.out.println("Please enter the location of bag number " + i + " to load:");
+            String filename = sc.nextLine();
+            // store the weights
+            String[] weights = null;
+            weights = PebbleGame.addFile(filename);
+
+            // fill the bag with the weigths
+            PebbleGame.fillBag(bag, weights);       
+
+            i++;
+        }
+
+        sc.close();
     }
 
     public static void main(String[] args) {
 
         //create the black bags
-        ArrayList<Bag> blackBags = new ArrayList<>();
+        ArrayList<Bag> blackBags = Bag.getBlackBags();
         blackBags.add(new Bag("black"));
         blackBags.add(new Bag("black"));
         blackBags.add(new Bag("black"));
 
         // create the white bags
-        ArrayList<Bag> whiteBags = new ArrayList<>();
+        ArrayList<Bag> whiteBags = Bag.getWhiteBags();
         whiteBags.add(new Bag("white"));
         whiteBags.add(new Bag("white"));
         whiteBags.add(new Bag("white"));
@@ -144,44 +191,9 @@ public class PebbleGame {
         for(int i=0; i<number; i++) {
             PebbleGame.addPlayer(i+1);
         }
-
-        Scanner sc = new Scanner(System.in);
-        Boolean filesLoaded = false;
-        while(filesLoaded != true){
-             // fill the bags with the pebbles from the weights
-            for(int i=0; i<blackBags.size(); i++) {
-
-                Bag bag = blackBags.get(i);
-                
-                // input the file
-                System.out.println("Please enter the location of bag number " + i + " to load:");
-                String filename = sc.nextLine();
-                // store the weights
-                String[] weights = PebbleGame.addFile(filename);
-                // fill the bag with the weigths
-                PebbleGame.fillBag(bag, weights);   
-                
-                if(i == 2){
-                    filesLoaded = true;
-                }
-            }
-        }
-       
-        for(int i=0; i<blackBags.size(); i++) {
-
-            Bag bag = blackBags.get(i);
-            
-            // input the file
-            System.out.println("Please enter the location of bag number " + i + " to load:");
-            String filename = sc.nextLine();
-            // store the weights
-            String[] weights = PebbleGame.addFile(filename);
-            // fill the bag with the weigths
-            PebbleGame.fillBag(bag, weights);       
-        }
-
-        sc.close();
         input.close();
+
+        PebbleGame.bagInputs();
         
         // testing thingy
         int count = 0;

@@ -4,6 +4,9 @@ public class Bag {
 
     // attributes
     private ArrayList<Pebble> pebbles = new ArrayList<>();
+    private static ArrayList<Bag> blackBags = new ArrayList<>();
+    private static ArrayList<Bag> whiteBags = new ArrayList<>();
+
     private String colour;
 
     /**
@@ -45,4 +48,17 @@ public class Bag {
      * @return pebbles
      */
     public ArrayList<Pebble> getPebbles() {return pebbles;}
+
+    /**
+     * Gets the arraylist of black bags
+     * @return blackBags
+     */
+    public static ArrayList<Bag> getBlackBags() {return blackBags;}
+
+    /**
+     * Gets the arraylist of white bags
+     * @return whiteBags
+     */
+    public static ArrayList<Bag> getWhiteBags() {return whiteBags;}
+
 }
