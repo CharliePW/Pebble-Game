@@ -71,23 +71,15 @@ public class PebbleGame {
             File file = new File(filename);
             FileReader fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
-
-            // seperating each value in the file from the ","
-            while ((line = bufferedReader.readLine()) != null) {                
-                
-                if(line.matches("(\\d+(,)?\\s?)+")) {
-                    // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
-                    if(filename.equals("example_file_3.csv")) {
-                        // store the weights in the array
-                        weights = line.split(", ");   
-                    } else {
-                        // store the weigths in the array
-                        weights = line.split(",");  
-                    }
-                } else {
-        
-                }
+            // Validate the file cotent format
+            while ((line = bufferedReader.readLine()) != null){
+                validateWeights(line);
             }
+            // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
+
+            weights = line.strip().split(",");
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch(NoSuchElementException e) {
@@ -105,7 +97,7 @@ public class PebbleGame {
      * @param bag
      * @param weights
      */
-    public static void fillBag(Bag bag, String[] weights) {
+    public static void fillBag(Bag bag, String[] weights) throws Exception {
         
         int weight;
 
@@ -117,26 +109,17 @@ public class PebbleGame {
         }   
     }
 
-    public static void validateWeights(String line) {
-        // seperating each value in the file from the ","
-        while ((line = bufferedReader.readLine()) != null) {                
-                
-            if(line.matches("(\\d+(,)?\\s?)+")) {
-                // doing this because in example_file_3.csv it's [1, 2, 3, 4....] not [1,2,3,4....]
-                if(filename.equals("example_file_3.csv")) {
-                    // store the weights in the array
-                    weights = line.split(", ");   
-                } else {
-                    // store the weigths in the array
-                    weights = line.split(",");  
-                }
-            } else {
-    
-            }
+    public static Boolean validateWeights(String line) {
+        //Checks file content is in the correct format
+        if (line.matches("(\\d+(,)?\\s?)+")) {
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
-    public static void bagInputs() {
+    public static void bagInputs() throws Exception {
 
         Scanner sc = new Scanner(System.in);
         ArrayList<Bag> blackBags = Bag.getBlackBags();
@@ -162,7 +145,7 @@ public class PebbleGame {
         sc.close();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         //create the black bags
         ArrayList<Bag> blackBags = Bag.getBlackBags();
